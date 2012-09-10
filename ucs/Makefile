@@ -1,0 +1,80 @@
+# Copyright 2012 Jesse Weaver
+# 
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+# 
+#        http://www.apache.org/licenses/LICENSE-2.0
+# 
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+#    implied. See the License for the specific language governing
+#    permissions and limitations under the License.
+
+include ../Makefile.inc
+
+SUBDIR	= ucs
+CFLAGS  = $(PRJCFLAGS) -I.. -I/usr/include
+OBJS		= InvalidCodepointException.o InvalidEncodingException.o nf.o utf.o UTF8Iter.o UTF16Iter.o UTF32Iter.o
+
+all : build __tests__
+
+thorough : runtests
+	cd __tests__; $(MAKE) $(MFLAGS) thorough
+
+build : prep $(OBJS)
+
+prep : ucs_arrays.h ucs_arrays.cpp
+
+__tests__ : force_look
+	$(ECHO) looking into $(SUBDIR)/__tests__ : $(MAKE) $(MFLAGS)
+	cd __tests__; $(MAKE) $(MFLAGS)
+
+runtests : all
+	$(ECHO) running tests for $(SUBDIR) : $(MAKE) $(MFLAGS) runtests
+	cd __tests__; $(MAKE) $(MFLAGS) runtests
+
+clean :
+	$(ECHO) cleaning up in $(SUBDIR)
+	-$(RM) -vf $(OBJS) 
+	-$(RM) -vfr *.dSYM
+	-$(RM) -vf ucs_arrays.*
+	cd __tests__; $(MAKE) $(MFLAGS) clean
+
+force_look :
+	true
+
+ucs_arrays.h : ucs_arrays.cpp
+
+ucs_arrays.cpp : scripts/index.pl scripts/UnicodeData.txt scripts/DerivedNormalizationProps.txt scripts/HangulSyllableType.txt scripts/NormalizationTest.txt
+	$(ECHO) generating ucs_arrays.h and ucs_arrays.cpp
+	cd scripts; perl index.pl 2> ../ucs_arrays.cpp > ../ucs_arrays.h
+
+InvalidCodepointException.o : InvalidCodepointException.h InvalidCodepointException.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o InvalidCodepointException.o InvalidCodepointException.cpp
+	$(CC) $(CFLAGS) -c -o InvalidCodepointException.o InvalidCodepointException.cpp
+
+InvalidEncodingException.o : InvalidEncodingException.h InvalidEncodingException.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o InvalidEncodingException.o InvalidEncodingException.cpp
+	$(CC) $(CFLAGS) -c -o InvalidEncodingException.o InvalidEncodingException.cpp
+
+nf.o : nf.h nf-inl.h nf.cpp ucs_arrays.h ucs_arrays.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o nf.o nf.cpp
+	$(CC) $(CFLAGS) -c -o nf.o nf.cpp
+
+utf.o : utf.h utf-inl.h utf.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o utf.o utf.cpp
+	$(CC) $(CFLAGS) -c -o utf.o utf.cpp
+
+UTF8Iter.o : UTF8Iter.h UTF8Iter-inl.h UTF8Iter.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o UTF8Iter.o UTF8Iter.cpp
+	$(CC) $(CFLAGS) -c -o UTF8Iter.o UTF8Iter.cpp
+
+UTF16Iter.o : UTF16Iter.h UTF16Iter-inl.h UTF16Iter.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o UTF16Iter.o UTF16Iter.cpp
+	$(CC) $(CFLAGS) -c -o UTF16Iter.o UTF16Iter.cpp
+
+UTF32Iter.o : UTF32Iter.h UTF32Iter-inl.h UTF32Iter.cpp
+	$(ECHO) $(CC) $(CFLAGS) -c -o UTF32Iter.o UTF32Iter.cpp
+	$(CC) $(CFLAGS) -c -o UTF32Iter.o UTF32Iter.cpp

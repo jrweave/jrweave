@@ -1,0 +1,33 @@
+This is a very early release of a code base developed by Jesse Weaver for
+experiments in his research.  Very little documentation is provided, but I
+(Jesse Weaver) got tired of telling people that I would open source this
+code as soon as I had time to document it... a time that never seems to
+come around.  So, at least it's available now.  Let's call it version 0.1.
+Good luck.
+
+
+=== LICENSING ===
+
+Everything here is available under the Apache License, Version 2.0, with
+the following exceptions.
+
+* The txt files under ucs/scripts/ are licensed under the "Unicode, Inc.
+  License Agreement for Data Files and Software".  See
+  ucs/scripts/README for more details, and
+  ucs/scripts/UNICODE_LICENSE for the actual license.
+* Possibly lang/scripts/language-subtag-registry, which was retrieved from
+  http://www.iana.org/assignments/language-subtag-registry .  See
+  lang/scripts/README for more details.
+
+A complete copy of the Apache 2.0 license is given in LICENSE.
+
+
+=== BUILDING ===
+
+To generate and compile everything, make.
+
+To run basic unit tests, make runtests.
+
+To run all unit tests, make thorough.
+
+To get rid of generated files, make clean.

@@ -1,0 +1,10 @@
+The files listed below, in the same directory as this README, are
+licensed under the "Unicode, Inc. License Agreement for Data Files and
+Software", a copy of which is provided in UNICODE_LICENSE in the same
+directory as this README.  The files listed below are NOT otherwise
+licensed herein.
+
+DerivedNormalizationProps.txt
+HangulSyllableType.txt
+NormalizationTest.txt
+UnicodeData.txt
